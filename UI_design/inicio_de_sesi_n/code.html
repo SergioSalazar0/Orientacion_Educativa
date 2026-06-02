@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inicio de Sesión - Orientación Educativa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#135bec",
+                "background-light": "#f6f6f8",
+                "background-dark": "#101622",
+              },
+              fontFamily: {
+                "display": ["Lexend"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex h-auto min-h-screen w-full flex-col items-center justify-center p-4">
+<div class="w-full max-w-[480px] bg-white dark:bg-slate-900 shadow-xl rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800">
+<!-- Header / Logo Section -->
+<div class="flex flex-col items-center px-8 pt-10 pb-6 text-center">
+<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined !text-4xl">school</span>
+</div>
+<h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Bienvenido</h1>
+<p class="mt-2 text-base text-slate-600 dark:text-slate-400">Inicia sesión para continuar con tu orientación educativa</p>
+</div>
+<!-- Form Section -->
+<form class="px-8 pb-10">
+<!-- Email Input -->
+<div class="flex flex-col gap-2 mb-5">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Correo electrónico</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">mail</span>
+<input class="form-input flex w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 h-14 pl-12 pr-4 text-base focus:border-primary focus:ring-2 focus:ring-primary/20 dark:text-white placeholder:text-slate-400" placeholder="ejemplo@correo.com" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="flex flex-col gap-2 mb-2">
+<div class="flex items-center justify-between">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Contraseña</label>
+<a class="text-sm font-medium text-primary hover:underline" href="#">¿Olvidaste tu contraseña?</a>
+</div>
+<div class="relative flex items-stretch">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">lock</span>
+<input class="form-input flex w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 h-14 pl-12 pr-12 text-base focus:border-primary focus:ring-2 focus:ring-primary/20 dark:text-white placeholder:text-slate-400" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center gap-2 mb-8">
+<input class="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" id="remember" type="checkbox"/>
+<label class="text-sm text-slate-600 dark:text-slate-400" for="remember">Recordarme en este dispositivo</label>
+</div>
+<!-- Action Button -->
+<button class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary h-14 text-lg font-bold text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary/30" type="submit">
+<span>Entrar</span>
+<span class="material-symbols-outlined">login</span>
+</button>
+<!-- Secondary Actions -->
+<div class="mt-8 flex flex-col items-center gap-4">
+<p class="text-sm text-slate-600 dark:text-slate-400">
+                    ¿Aún no tienes una cuenta? 
+                    <a class="font-bold text-primary hover:underline" href="#">Crear cuenta</a>
+</p>
+<div class="flex w-full items-center gap-4">
+<div class="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
+<span class="text-xs font-medium uppercase tracking-wider text-slate-400">o accede con</span>
+<div class="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
+</div>
+<div class="flex w-full gap-4">
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors" type="button">
+<img alt="Google" class="h-5 w-5" data-alt="Icono del logotipo de Google" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB7LBMheHdHQMVAFVoBl3c-CGNufPjF3IXhxRYHb76rnRsutdUZ2jIFdW6vcb1pdFXr6n3f3iV5ZAO9Z1iTNch5CRX0InP9GaZ8Ca6oIa94JfJZab4ppKvv8tTKeCjL1a_5_uigvP3Q2bR1SQM4Ba9H02LiGQ30pitFCvoqqvKf06Dl5Y9ex2sxfctiUyelgcX3Ud4wQyyfSV3hCaZXJa94kRKD38YgIyZ9sh1URVsTQ1Xxrh7jMgrr47HKWh3V-oNMSu_L0mFOcc"/>
+                        Google
+                    </button>
+<button class="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors" type="button">
+<span class="material-symbols-outlined text-black dark:text-white">account_circle</span>
+                        Microsoft
+                    </button>
+</div>
+</div>
+</form>
+<!-- Footer Help -->
+<div class="bg-slate-50 dark:bg-slate-800/50 px-8 py-4 text-center border-t border-slate-200 dark:border-slate-800">
+<p class="text-xs text-slate-500 dark:text-slate-400">Al iniciar sesión, aceptas nuestros <a class="underline" href="#">Términos de Servicio</a> y <a class="underline" href="#">Política de Privacidad</a>.</p>
+</div>
+</div>
+<!-- Decorative Elements (Mobile hidden/Tablet visible) -->
+<div class="absolute top-10 left-10 hidden xl:block opacity-20 pointer-events-none">
+<span class="material-symbols-outlined !text-[120px] text-primary">architecture</span>
+</div>
+<div class="absolute bottom-10 right-10 hidden xl:block opacity-20 pointer-events-none">
+<span class="material-symbols-outlined !text-[120px] text-primary">auto_stories</span>
+</div>
+</div>
+</body></html>

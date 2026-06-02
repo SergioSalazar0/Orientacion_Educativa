@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="max-w-md mx-auto bg-white dark:bg-slate-900 min-h-screen shadow-xl flex flex-col">
+<!-- Header -->
+<header class="flex items-center p-4 justify-between border-b border-slate-100 dark:border-slate-800 sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-10">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">dashboard</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight">Dashboard Orientador</h1>
+</div>
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-1 p-4 space-y-6 pb-24">
+<!-- Quick Actions Section -->
+<section>
+<h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-3 px-1">Accesos Rápidos</h2>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span class="material-symbols-outlined mb-2 text-2xl">person_add</span>
+<span class="text-xs font-bold truncate w-full text-center">Registrar Alumno</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span class="material-symbols-outlined mb-2 text-2xl">description</span>
+<span class="text-xs font-bold truncate w-full text-center">Crear Reporte</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span class="material-symbols-outlined mb-2 text-2xl">person_remove</span>
+<span class="text-xs font-bold truncate w-full text-center">Registro de Bajas</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span class="material-symbols-outlined mb-2 text-2xl">verified_user</span>
+<span class="text-xs font-bold truncate w-full text-center">Justificantes</span>
+</button>
+</div>
+</section>
+<!-- Upcoming Appointments -->
+<section>
+<div class="flex items-center justify-between mb-3 px-1">
+<h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">Próximas Citas</h2>
+<a class="text-xs font-medium text-primary" href="#">Ver todas</a>
+</div>
+<div class="space-y-3">
+<div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center gap-4">
+<div class="size-12 rounded-full overflow-hidden bg-slate-200">
+<img class="w-full h-full object-cover" data-alt="Student profile portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqxnuBrJ1sxHMX-FPisUyJ2YLzgaeC8l5tN-NS7T30ipCukZYYt-mRxH6FeWUX1LIn0IK7MK5HX4ObVJh1BBYVZxS86YQ_F3GkLLTzqzVnH-3MWZ5ab9DYlu85CN8uLy51VGJcu3W37rVwn-R7vDlMYz_mgiWli6HoB1hECKQNokRF7UcPOWlAMwyJE6iUS1EoSiXrB13YtGWefBOORNTlaNsk_iCXTvQGodoba3JC0vb6Q8H2IMd7WfWy8xNO8CzWYqmvshytheQ"/>
+</div>
+<div class="flex-1">
+<p class="font-bold text-sm">Lucía Méndez</p>
+<p class="text-xs text-slate-500">Sesión de seguimiento académico</p>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-primary">10:30 AM</p>
+<p class="text-[10px] text-slate-400">Hoy</p>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center gap-4">
+<div class="size-12 rounded-full overflow-hidden bg-slate-200">
+<img class="w-full h-full object-cover" data-alt="Male student profile portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwdN-sZCkzC5PrHDmiTFNWiiDTNwifyHlBoOSL5BCZ2O5zR2J5yPUi9m6bY3uh3-ZiflA0QD7bas5shfSANGmAvbu1uhsH_rAcf0710Cb-VIUOLmqVLQqCO2i4FQQTJIJYNPfiOML_gq4lLJSufZwWWkKTaiiQI0u-dtz_8bQsE8C-LjQz84bfUd5mosMIbi1xoodQ_XqbkswwtIJYhmGNa_mO0bJSRD8C2VDHYUjcWaDvk_LErUxxi_P1H2CqYIUOUP03Y2m7yG4"/>
+</div>
+<div class="flex-1">
+<p class="font-bold text-sm">Roberto García</p>
+<p class="text-xs text-slate-500">Orientación vocacional</p>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-slate-600 dark:text-slate-300">02:15 PM</p>
+<p class="text-[10px] text-slate-400">Hoy</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Academic Alerts -->
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-6 py-2 pb-6 flex justify-between items-center z-20">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined fill-1">home</span>
+<span class="text-[10px] font-bold">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[10px] font-medium">Citas</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Alumnos</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="text-[10px] font-medium">Mensajes</span>
+</a>
+</nav>
+</div>
+</body></html>

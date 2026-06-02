@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header / Navigation Area -->
+<header class="sticky top-0 z-10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Historial de Reportes</h1>
+<div class="w-10"></div> <!-- Spacer for centering title -->
+</div>
+</header>
+<main class="flex-1 max-w-md mx-auto w-full pb-24">
+<!-- Summary Counter Card -->
+<div class="p-4">
+<div class="bg-primary/10 border border-primary/20 rounded-xl p-6 flex items-center justify-between">
+<div>
+<p class="text-primary font-medium text-sm">Resumen de Orientación</p>
+<p class="text-3xl font-bold mt-1">Total: 3</p>
+</div>
+<div class="bg-primary text-white p-3 rounded-xl">
+<span class="material-symbols-outlined text-3xl">assignment_late</span>
+</div>
+</div>
+</div>
+<div class="px-4 pb-2">
+<h2 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">Reportes Recientes</h2>
+</div>
+<!-- Reports List -->
+<div class="space-y-4 px-4">
+<!-- Report Card 1 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="h-32 bg-cover bg-center" data-alt="Aula de clases moderna con pupitres" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAVe8juK9baa00q4-UDyBJ_JM66qNkra9pTCZU6LePntw5XNbCaenkR6KF80-5LJy1-3zbKhrMl0SAP9ukfHKqp4OglYaWvu7n1yIboPm3EcaJOG01agZj7H4f8iakyfd5f08nG9CijN0dlFeOjJavZPpaSiBRQK8ciZRLkSdk9N98M8KtWHTcY98FG1uP9ZBoR7XmykWLEx-Bcv3oM8kA4nln2HwPoIOOAqz-W-mwIg5F4FWIeiFB79g4K5SrpcjDQw777oFzUmj8");'></div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Conducta</span>
+<h3 class="text-lg font-bold mt-2">Incidente en clase</h3>
+</div>
+<p class="text-slate-400 text-xs font-medium">15 Oct 2023</p>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">person</span>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Prof. Ana García</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            El estudiante mostró una actitud disruptiva durante la clase de matemáticas, interrumpiendo a sus compañeros reiteradamente.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Report Card 2 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="h-32 bg-cover bg-center" data-alt="Libros y útiles escolares sobre una mesa" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdwe9ppjKZgPOCfA-aiJK3bxEsMMGyE1EwncI5Exn1q_f0zzxdhH9-ouu80j279q_tWCAW1HzJk9fiDy9ua-MT7GHc__RsZAgWNUFKL116xYPWauzXFSGCgUoqn2IFHC1QSfazBcYJtxjWbUNWR655KcW1WzvsHWu3tqwaqpKpvdLw-YfbB66T3MqAplci1iu_9d6u6-YHBAjyepJdINVNxNGe1q5prHUj5m0LwhdCYcq0XFYX_xogg_TmuUmGWlnmXHNy0qqxal4");'></div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Rendimiento Académico</span>
+<h3 class="text-lg font-bold mt-2">Bajo desempeño en evaluación</h3>
+</div>
+<p class="text-slate-400 text-xs font-medium">02 Oct 2023</p>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">psychology</span>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Psic. Roberto Méndez</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Se observa una baja significativa en las calificaciones de Ciencias. Se recomienda una reunión para coordinar apoyo adicional.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Report Card 3 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="h-32 bg-cover bg-center" data-alt="Reloj de pared en una institución educativa" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD81-Jz88yz11Ob0qCb2TsWT7BEG12ptSasrAxQFy4XS6FhN1Zen4FK3UvnTbRz2pMKSJkS7rFkSW9OtaBWbQH_GdZbWjQ58o8KU95oomx8Yd9CJhsE1Smjoty7F-gO9GfBqRjAmHviGfaaHNonWimyx6Lg0bzfaX6g4ORLzKOjgSk3zDlnkmm3pQivDNya_yQBFRwx_L7_nysiGK19vP66aKy18YMCJnh9wsdwwcfIKI-OjubZFRaIsOzbJ83b53M9bMjvc2rB7Z8");'></div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Asistencia</span>
+<h3 class="text-lg font-bold mt-2">Inasistencia injustificada</h3>
+</div>
+<p class="text-slate-400 text-xs font-medium">28 Sep 2023</p>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">history_edu</span>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">Coord. Marta Rivas</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            El estudiante no asistió a las dos primeras horas de clase sin previa notificación de los padres o representantes.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 px-6 py-2 flex justify-between items-center z-20">
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">description</span>
+<span class="text-[10px] font-medium">Reportes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-[10px] font-medium">Mensajes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Perfil</span>
+</a>
+</nav>
+</body></html>

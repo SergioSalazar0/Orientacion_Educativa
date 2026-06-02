@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<!-- Main Container -->
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto bg-white dark:bg-slate-900 shadow-xl overflow-x-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-10 flex items-center bg-white dark:bg-slate-900 p-4 border-b border-slate-100 dark:border-slate-800 justify-between">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 ml-4">Búsqueda de Alumnos</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-transparent text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Search Input -->
+<div class="px-4 py-4">
+<label class="flex flex-col w-full">
+<div class="flex w-full items-stretch rounded-xl h-12 bg-slate-100 dark:bg-slate-800 border border-transparent focus-within:border-primary transition-all">
+<div class="text-slate-500 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full border-none bg-transparent focus:ring-0 text-slate-900 dark:text-white placeholder:text-slate-500 px-4 text-base font-normal" placeholder="Nombre del alumno..." value=""/>
+</div>
+</label>
+</div>
+<!-- Filters Section -->
+<div class="px-4 space-y-4 mb-6">
+<div class="grid grid-cols-2 gap-3">
+<label class="flex flex-col flex-1">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-semibold pb-1.5 ml-1">Grado</p>
+<select class="form-select w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 text-sm">
+<option value="">Seleccionar</option>
+<option value="1">1er Semestre</option>
+<option value="2">3er Semestre</option>
+<option value="3">5to Semestre</option>
+</select>
+</label>
+<label class="flex flex-col flex-1">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-semibold pb-1.5 ml-1">Grupo</p>
+<select class="form-select w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 text-sm">
+<option value="">Seleccionar</option>
+<option value="A">Grupo A</option>
+<option value="B">Grupo B</option>
+<option value="C">Grupo C</option>
+</select>
+</label>
+</div>
+<label class="flex flex-col w-full">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-semibold pb-1.5 ml-1">Especialidad</p>
+<select class="form-select w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 text-sm">
+<option value="">Todas las especialidades</option>
+<option value="programacion">Programación</option>
+<option value="contabilidad">Contabilidad</option>
+<option value="mecanica">Mecánica Industrial</option>
+<option value="ofimatica">Ofimática</option>
+</select>
+</label>
+</div>
+<!-- Student List Header -->
+<div class="px-4 py-2 flex justify-between items-center">
+<h3 class="text-slate-900 dark:text-white font-bold text-base">Resultados (24)</h3>
+<span class="text-primary text-xs font-medium bg-primary/10 px-2 py-1 rounded-full uppercase tracking-wider">Activos</span>
+</div>
+<!-- Student List -->
+<div class="flex-1 overflow-y-auto px-4 pb-24">
+<div class="space-y-3 mt-2">
+<!-- Student Card 1 -->
+<div class="flex items-center p-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl hover:border-primary/50 transition-colors shadow-sm">
+<img alt="Perfil estudiante" class="size-14 rounded-full object-cover border-2 border-primary/20" data-alt="Retrato de un estudiante joven sonriente" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfmNpHb3gEv7a1xhaKe03HxCflmzJIqg4rjAbyfl1CAG94Sh02MsXOmmY_H9d_U1VMoreuaA8-uj_Ayp2u5S0dr2xALDrno9GSZT5gwvTIGxmz-P6DsPuaySR223pBS_QTnunpHHnhumCGVwGyrJAOJnh5SbdtoKBUHIwkFi0wi050oeCR2MPyxQmNoaUN7NM2ezuM6jPRuXRPoMIbUP9rUToYM9h1XMBySy4U2yvbb3cL1JbaYnt48Ck3xhROaiKIHJvssi82vWc"/>
+<div class="ml-4 flex-1">
+<h4 class="text-slate-900 dark:text-white font-semibold text-sm">Alejandro García Ruiz</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs">5to Semestre • Grupo B</p>
+<p class="text-primary text-[10px] font-bold uppercase mt-0.5">Programación</p>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Student Card 2 -->
+<div class="flex items-center p-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl hover:border-primary/50 transition-colors shadow-sm">
+<img alt="Perfil estudiante" class="size-14 rounded-full object-cover border-2 border-primary/20" data-alt="Retrato de una estudiante con gafas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwveJCXebHDMWFhIoBq2l946WMY0OKrjkbwNp8ox45qVAk88hLoRObLuchVB9G7xJvNJqUu1GaQ1j23WiYUOhXvLYOWPi_rPmyWNWRKfu7GAAvKJpcyC60y24OKrLqh7_UFr2tfaDagTIr3nz7wEEgQm8GSDiSjcmBlb-VOPfdbpMPnlA7eLy3mKivz-Bn_s5MLsbs9XZhSPIqYwvr1xyThAsp6txBesdEjWgLfdkRCc5yZ5_C6nUpRZSLpFm7wycjaRjaOmxswRM"/>
+<div class="ml-4 flex-1">
+<h4 class="text-slate-900 dark:text-white font-semibold text-sm">María Fernanda López</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs">3er Semestre • Grupo A</p>
+<p class="text-primary text-[10px] font-bold uppercase mt-0.5">Contabilidad</p>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Student Card 3 -->
+<div class="flex items-center p-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl hover:border-primary/50 transition-colors shadow-sm">
+<img alt="Perfil estudiante" class="size-14 rounded-full object-cover border-2 border-primary/20" data-alt="Retrato de un estudiante de perfil" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0R7WoNGcdjm6DqVULuomJDBGB5GOLU_2phT43acgZczl8e_UtgsfZ4jGONv8doDLf-wZzL62cs6-fV9MDQaLsluu31ehV23U5_7tpiG5IgcyK6XCn2tcfDmXPwo1ktfXze4YXQLVGVdlx88g6GY7R9HzNjRf51TbPBHaR9vJVpwyGqRU0WWPV5xyP_QndJSRVJyhCGYmtxkyJXqBu_tWCBev2bUCUj_cb-PZM36sTxCMhM8EtVKbV_xIcoFrhrIqRI51KPEePcBs"/>
+<div class="ml-4 flex-1">
+<h4 class="text-slate-900 dark:text-white font-semibold text-sm">Roberto Sánchez P.</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs">1er Semestre • Grupo C</p>
+<p class="text-primary text-[10px] font-bold uppercase mt-0.5">Ofimática</p>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Student Card 4 -->
+<div class="flex items-center p-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl hover:border-primary/50 transition-colors shadow-sm">
+<img alt="Perfil estudiante" class="size-14 rounded-full object-cover border-2 border-primary/20" data-alt="Estudiante joven con cabello rizado" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK6N24t9duCo8BLpwtVyLEUyy-C1XRpfnxaH7D-ahOQ5iibUjifb132RJG58YXUFd__KvfIdAwo-eQxGKdA8doFcGgpeqlNrm4l9Oa5kKUqCLHmko3DJVgvwhsiNIvDfJAuQqd7wGnvYUzuDryuLX_b96SDF6QxFUI5VWvwTajB0kr10puIFSjfWHUPp17Aw4JKg6TOphbNtYMgCUxUDd49yLh_GoGEeVb2elt-zLAQLefkoxnY3ghZ7JFAookFEZ5mhtO2460b-I"/>
+<div class="ml-4 flex-1">
+<h4 class="text-slate-900 dark:text-white font-semibold text-sm">Sofía Valentina Martínez</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs">5to Semestre • Grupo B</p>
+<p class="text-primary text-[10px] font-bold uppercase mt-0.5">Programación</p>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Student Card 5 -->
+<div class="flex items-center p-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl hover:border-primary/50 transition-colors shadow-sm">
+<img alt="Perfil estudiante" class="size-14 rounded-full object-cover border-2 border-primary/20" data-alt="Retrato frontal de estudiante masculino" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzR00cLZmSOuNL4uDKM5DwzK3Rj4a9GfRsFfgfVuHHYCjJGokQ2x71Eo6NRkDd_WIpFUvS81PPWd7A9zPdaTz6Kl3KrKVczcc0jkTgY5IUjtKo8Qh0Bk_wzcVhBJ9A0pPfmuZjof_wfp_is0lnsCgaJCTqpnRALnHdWqmd3TDfuke1btJ6hSPHIyASrOFJJ7bWycoE2GGSJEgl6H45PW82s5AWuWW3rb_mFf2bsSJcMVTR_B3ZjvhcwIRi87INeqrmjTt6aL6Zwg4"/>
+<div class="ml-4 flex-1">
+<h4 class="text-slate-900 dark:text-white font-semibold text-sm">Carlos Eduardo Sosa</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs">3er Semestre • Grupo B</p>
+<p class="text-primary text-[10px] font-bold uppercase mt-0.5">Mecánica Industrial</p>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 flex justify-around items-center px-4 pb-4 pt-2 z-20">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium">Inicio</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-[10px] font-medium">Alumnos</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">description</span>
+<p class="text-[10px] font-medium">Reportes</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<p class="text-[10px] font-medium">Perfil</p>
+</a>
+</nav>
+</div>
+</body></html>
