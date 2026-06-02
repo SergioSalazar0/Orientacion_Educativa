@@ -39,9 +39,55 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           password: _passwordCtrl.text,
           fullName: _nameCtrl.text.trim(),
         );
-    if (ok && mounted) {
+    if (!mounted) return;
+    
+    if (ok) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Symbols.check_circle, color: Colors.white),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  '¡Cuenta creada exitosamente!',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.green.shade600,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(16),
+          duration: const Duration(seconds: 3),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+      await Future.delayed(const Duration(milliseconds: 500));
       // Después del registro, el padre debe vincular a su hijo
-      context.go(AppRoutes.linkChild);
+      if (mounted) context.go(AppRoutes.linkChild);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Symbols.error, color: Colors.white),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  ref.read(authViewModelProvider).errorMessage ?? 'Error al registrar',
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(16),
+          duration: const Duration(seconds: 4),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
     }
   }
 
@@ -54,6 +100,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       appBar: AppBar(
         leading: const BackButton(),
         title: const Text('Crear Cuenta'),
+        elevation: 0,
       ),
       body: SafeArea(
         child: Center(
@@ -65,51 +112,80 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 key: _formKey,
                 child: Column(
                   children: [
+                    // Header con icono y animación
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: primary.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [primary.withValues(alpha: 0.2), primary.withValues(alpha: 0.05)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: primary.withValues(alpha: 0.3),
+                          width: 1.5,
+                        ),
                       ),
-                      child: Icon(Symbols.school, size: 44, color: primary),
-                    ).animate().scale(duration: 500.ms, curve: Curves.elasticOut),
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: primary.withValues(alpha: 0.15),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Symbols.school, size: 44, color: primary),
+                          ).animate().scale(duration: 500.ms, curve: Curves.elasticOut),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Crear tu Cuenta',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          ).animate().fadeIn(delay: 100.ms),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Únete a nuestra plataforma de orientación educativa',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.grey.shade700,
+                              height: 1.5,
+                            ),
+                            textAlign: TextAlign.center,
+                          ).animate().fadeIn(delay: 150.ms),
+                        ],
+                      ),
+                    ),
 
-                    const SizedBox(height: 24),
-                    Text(
-                      'Únete a Orientación Educativa',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.w700),
-                      textAlign: TextAlign.center,
-                    ).animate().fadeIn(delay: 100.ms),
+                    const SizedBox(height: 40),
 
-                    const SizedBox(height: 32),
-
+                    // Campos de formulario
                     AppTextField(
                       label: 'Nombre Completo',
                       controller: _nameCtrl,
-                      hint: 'Ej. Juan Pérez',
+                      hint: 'Ej. Juan Pérez López',
                       prefixIcon: Symbols.person,
                       validator: (v) => (v == null || v.trim().isEmpty)
-                          ? 'Ingresa tu nombre'
+                          ? 'Ingresa tu nombre completo'
                           : null,
-                    ).animate().fadeIn(delay: 150.ms),
+                    ).animate().fadeIn(delay: 200.ms),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
 
                     AppTextField(
                       label: 'Correo Electrónico',
                       controller: _emailCtrl,
-                      hint: 'ejemplo@correo.com',
+                      hint: 'tu.email@correo.com',
                       prefixIcon: Symbols.mail,
                       keyboardType: TextInputType.emailAddress,
                       validator: (v) => (v == null || !v.contains('@'))
                           ? 'Correo inválido'
                           : null,
-                    ).animate().fadeIn(delay: 200.ms),
+                    ).animate().fadeIn(delay: 250.ms),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
 
                     AppTextField(
                       label: 'Contraseña',
@@ -120,9 +196,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       validator: (v) => (v == null || v.length < 6)
                           ? 'Mínimo 6 caracteres'
                           : null,
-                    ).animate().fadeIn(delay: 250.ms),
+                    ).animate().fadeIn(delay: 300.ms),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
 
                     AppTextField(
                       label: 'Confirmar Contraseña',
@@ -133,42 +209,92 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       validator: (v) => v != _passwordCtrl.text
                           ? 'Las contraseñas no coinciden'
                           : null,
-                    ).animate().fadeIn(delay: 300.ms),
+                    ).animate().fadeIn(delay: 350.ms),
 
+                    // Mensaje de error profesional
                     if (state.errorMessage != null) ...[
-                      const SizedBox(height: 12),
-                      Text(
-                        state.errorMessage!,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                          fontSize: 13,
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade50,
+                          border: Border.all(
+                            color: Colors.red.shade200,
+                            width: 1.5,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Symbols.error,
+                              color: Colors.red.shade700,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                state.errorMessage!,
+                                style: TextStyle(
+                                  color: Colors.red.shade800,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ).animate().shake(),
                     ],
 
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 40),
 
+                    // Botón de registro
                     AppButton(
-                      label: 'Registrarse',
+                      label: 'Crear Cuenta',
                       icon: Symbols.how_to_reg,
                       isLoading: state.isLoading,
                       onPressed: _submit,
-                    ).animate().fadeIn(delay: 350.ms),
+                    ).animate().fadeIn(delay: 400.ms),
 
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('¿Ya tienes cuenta? '),
-                        TextButton(
-                          onPressed: () => context.pop(),
-                          child: const Text(
-                            'Inicia sesión',
-                            style: TextStyle(fontWeight: FontWeight.w700),
+                    const SizedBox(height: 20),
+
+                    // Link a login
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: Colors.grey.shade200,
+                            width: 1,
                           ),
                         ),
-                      ],
-                    ).animate().fadeIn(delay: 400.ms),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '¿Ya tienes cuenta? ',
+                            style: TextStyle(
+                              color: Colors.grey.shade700,
+                              fontSize: 14,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () => context.pop(),
+                            child: Text(
+                              'Inicia sesión',
+                              style: TextStyle(
+                                color: primary,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ).animate().fadeIn(delay: 450.ms),
                   ],
                 ),
               ),

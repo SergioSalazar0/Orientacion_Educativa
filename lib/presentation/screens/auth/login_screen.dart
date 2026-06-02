@@ -34,6 +34,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           email: _emailCtrl.text.trim(),
           password: _passwordCtrl.text,
         );
+    
+    if (!mounted) return;
+    
+    final state = ref.read(authViewModelProvider);
+    if (state.errorMessage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Symbols.check_circle, color: Colors.white),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  '¡Sesión iniciada exitosamente!',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.green.shade600,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(16),
+          duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+    }
   }
 
   @override
@@ -52,42 +79,78 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    // Logo
+                    // Header profesional
                     Container(
-                      width: 72,
-                      height: 72,
+                      padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: primary.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [primary.withValues(alpha: 0.2), primary.withValues(alpha: 0.05)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: primary.withValues(alpha: 0.3),
+                          width: 1.5,
+                        ),
                       ),
-                      child: Icon(Symbols.school, size: 36, color: primary),
-                    )
-                        .animate()
-                        .scale(duration: 500.ms, curve: Curves.elasticOut),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: primary.withValues(alpha: 0.15),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Symbols.school, size: 40, color: primary),
+                          )
+                              .animate()
+                              .scale(duration: 500.ms, curve: Curves.elasticOut),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Orientación Educativa',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          ).animate().fadeIn(delay: 100.ms),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Plataforma de acompañamiento educativo',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.grey.shade700,
+                            ),
+                            textAlign: TextAlign.center,
+                          ).animate().fadeIn(delay: 150.ms),
+                        ],
+                      ),
+                    ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 40),
+
                     Text(
                       'Bienvenido',
                       style: Theme.of(context)
                           .textTheme
-                          .headlineMedium
+                          .headlineSmall
                           ?.copyWith(fontWeight: FontWeight.w700),
-                    ).animate().fadeIn(delay: 100.ms),
+                    ).animate().fadeIn(delay: 200.ms),
                     const SizedBox(height: 8),
                     Text(
                       'Inicia sesión para continuar',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.6),
+                            color: Colors.grey.shade700,
+                            height: 1.5,
                           ),
-                    ).animate().fadeIn(delay: 150.ms),
+                    ).animate().fadeIn(delay: 250.ms),
 
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 32),
 
+                    // Email field
                     AppTextField(
-                      label: 'Correo electrónico',
+                      label: 'Correo Electrónico',
                       controller: _emailCtrl,
                       hint: 'ejemplo@correo.com',
                       prefixIcon: Symbols.mail,
@@ -95,10 +158,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       validator: (v) => (v == null || !v.contains('@'))
                           ? 'Ingresa un correo válido'
                           : null,
-                    ).animate().fadeIn(delay: 200.ms),
+                    ).animate().fadeIn(delay: 300.ms),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
 
+                    // Password field
                     AppTextField(
                       label: 'Contraseña',
                       controller: _passwordCtrl,
@@ -108,41 +172,53 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       validator: (v) => (v == null || v.length < 6)
                           ? 'La contraseña es muy corta'
                           : null,
-                    ).animate().fadeIn(delay: 250.ms),
+                    ).animate().fadeIn(delay: 350.ms),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () =>
-                            context.push(AppRoutes.forgotPassword),
-                        child: const Text('¿Olvidaste tu contraseña?'),
+                        onPressed: () => context.push(AppRoutes.forgotPassword),
+                        child: Text(
+                          '¿Olvidaste tu contraseña?',
+                          style: TextStyle(
+                            color: primary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
-                    ).animate().fadeIn(delay: 300.ms),
+                    ).animate().fadeIn(delay: 400.ms),
 
+                    // Error message profesional
                     if (state.errorMessage != null) ...[
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 16),
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .error
-                              .withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.red.shade50,
+                          border: Border.all(
+                            color: Colors.red.shade200,
+                            width: 1.5,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.error_outline,
-                                color: Theme.of(context).colorScheme.error,
-                                size: 18),
-                            const SizedBox(width: 8),
+                            Icon(
+                              Symbols.error,
+                              color: Colors.red.shade700,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: Text(
                                 state.errorMessage!,
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.error,
-                                  fontSize: 13,
+                                  color: Colors.red.shade800,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.4,
                                 ),
                               ),
                             ),
@@ -151,31 +227,53 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ).animate().shake(),
                     ],
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 32),
+
+                    // Login button
                     AppButton(
-                      label: 'Entrar',
+                      label: 'Iniciar Sesión',
                       icon: Symbols.login,
                       isLoading: state.isLoading,
                       onPressed: _submit,
-                    ).animate().fadeIn(delay: 350.ms),
+                    ).animate().fadeIn(delay: 450.ms),
 
                     const SizedBox(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '¿Aún no tienes cuenta? ',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        TextButton(
-                          onPressed: () => context.push(AppRoutes.register),
-                          child: const Text(
-                            'Crear cuenta',
-                            style: TextStyle(fontWeight: FontWeight.w700),
+
+                    // Sign up link
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: Colors.grey.shade200,
+                            width: 1,
                           ),
                         ),
-                      ],
-                    ).animate().fadeIn(delay: 400.ms),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '¿Aún no tienes cuenta? ',
+                            style: TextStyle(
+                              color: Colors.grey.shade700,
+                              fontSize: 14,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () => context.push(AppRoutes.register),
+                            child: Text(
+                              'Crear una ahora',
+                              style: TextStyle(
+                                color: primary,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ).animate().fadeIn(delay: 500.ms),
                   ],
                 ),
               ),
