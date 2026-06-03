@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'; // IMPORTANTE: Agregado para Supabase
 
 import '../../../core/router/app_router.dart';
 import '../../viewmodels/justification_viewmodel.dart';
@@ -25,6 +26,24 @@ class ParentHomeScreen extends ConsumerWidget {
         title: const Text('Orientación Educativa'),
         centerTitle: true,
         actions: [
+          // BOTÓN DE CERRAR SESIÓN MODIFICADO CON SUPABASE
+          IconButton(
+            icon: const Icon(Symbols.logout),
+            tooltip: 'Cerrar sesión',
+            onPressed: () async {
+              try {
+                // 1. Destruye la sesión de forma real en Supabase para evitar rebotes
+                await Supabase.instance.client.auth.signOut();
+                
+                // 2. Redirecciona al Login destruyendo el historial previo de navegación
+                if (context.mounted) {
+                  context.go(AppRoutes.login);
+                }
+              } catch (e) {
+                debugPrint('Error al cerrar sesión: $e');
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(Symbols.notifications),
             onPressed: () => context.push(AppRoutes.parentAppointments),
