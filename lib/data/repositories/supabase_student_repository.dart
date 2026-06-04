@@ -84,7 +84,30 @@ class SupabaseStudentRepository implements IStudentRepository {
   @override
   Future<Student> createStudent(Student student) async {
     try {
-      final model = StudentModel.fromEntity(student);
+      // Asignar createdAt si no tiene (para cumplir con la constraint de BD)
+      final studentWithTimestamp = student.createdAt == null
+          ? Student(
+              id: student.id,
+              studentCode: student.studentCode,
+              fullName: student.fullName,
+              semester: student.semester,
+              group: student.group,
+              specialty: student.specialty,
+              status: student.status,
+              photoUrl: student.photoUrl,
+              birthDate: student.birthDate,
+              address: student.address,
+              bloodType: student.bloodType,
+              insurance: student.insurance,
+              nss: student.nss,
+              allergies: student.allergies,
+              medicalNotes: student.medicalNotes,
+              createdBy: student.createdBy,
+              createdAt: DateTime.now(), // Asignar fecha actual
+            )
+          : student;
+      
+      final model = StudentModel.fromEntity(studentWithTimestamp);
       final json = model.toJson()..remove('id');
       final data = await _client
           .from(AppConstants.tableStudents)
@@ -127,8 +150,33 @@ class SupabaseStudentRepository implements IStudentRepository {
   @override
   Future<List<Student>> bulkInsert(List<Student> students) async {
     try {
+      final now = DateTime.now();
       final rows = students
-          .map((s) => StudentModel.fromEntity(s).toJson()..remove('id'))
+          .map((s) {
+            // Asignar createdAt si no tiene
+            final student = s.createdAt == null
+                ? Student(
+                    id: s.id,
+                    studentCode: s.studentCode,
+                    fullName: s.fullName,
+                    semester: s.semester,
+                    group: s.group,
+                    specialty: s.specialty,
+                    status: s.status,
+                    photoUrl: s.photoUrl,
+                    birthDate: s.birthDate,
+                    address: s.address,
+                    bloodType: s.bloodType,
+                    insurance: s.insurance,
+                    nss: s.nss,
+                    allergies: s.allergies,
+                    medicalNotes: s.medicalNotes,
+                    createdBy: s.createdBy,
+                    createdAt: now,
+                  )
+                : s;
+            return StudentModel.fromEntity(student).toJson()..remove('id');
+          })
           .toList();
       final data = await _client
           .from(AppConstants.tableStudents)

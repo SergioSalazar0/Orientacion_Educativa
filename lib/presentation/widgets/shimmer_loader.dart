@@ -16,22 +16,32 @@ class ShimmerLoader extends StatelessWidget {
       highlightColor: Theme.of(context).brightness == Brightness.dark
           ? const Color(0xFF2D3748)
           : const Color(0xFFF8FAFC),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            for (int i = 0; i < itemCount; i++) ...[
-              if (i > 0) const SizedBox(height: 12),
-              const _ShimmerCard(),
-            ]
-          ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: _buildShimmerCards(),
+          ),
         ),
       ),
     );
   }
+
+  List<Widget> _buildShimmerCards() {
+    final cards = <Widget>[];
+    for (int i = 0; i < itemCount; i++) {
+      if (i > 0) {
+        cards.add(const SizedBox(height: 12));
+      }
+      cards.add(const _ShimmerCard());
+    }
+    return cards;
+  }
 }
 
 class _ShimmerCard extends StatelessWidget {
+  const _ShimmerCard();
+
   @override
   Widget build(BuildContext context) {
     return Container(
