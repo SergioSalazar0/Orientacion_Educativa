@@ -68,7 +68,7 @@ class SupabaseReportRepository implements IReportRepository {
       await _client.storage
           .from(AppConstants.bucketReportImages)
           .uploadBinary(path, Uint8List.fromList(imageBytes),
-              fileOptions: sb.FileOptions(upsert: true));
+              fileOptions: const sb.FileOptions(upsert: true));
       imageUrl = await _client.storage
           .from(AppConstants.bucketReportImages)
           .createSignedUrl(path, 60 * 60 * 24 * 365);

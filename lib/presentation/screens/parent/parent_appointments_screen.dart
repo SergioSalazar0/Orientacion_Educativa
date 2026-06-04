@@ -48,7 +48,7 @@ class _AppointmentsList extends ConsumerWidget {
       loading: () => const ShimmerLoader(),
       error: (e, _) => Center(child: Text('Error: $e')),
       data: (appointments) => appointments.isEmpty
-          ? EmptyState(
+          ? const EmptyState(
               icon: Symbols.calendar_month,
               title: 'Sin citas programadas',
               subtitle: 'El orientador agendará una cita cuando sea necesario',

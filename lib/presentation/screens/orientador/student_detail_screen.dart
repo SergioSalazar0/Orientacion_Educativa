@@ -67,7 +67,7 @@ class StudentDetailScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Info académica
-                    _SectionTitle('Información Académica').animate().fadeIn(),
+                    const _SectionTitle('Información Académica').animate().fadeIn(),
                     Card(
                       child: Padding(
                         padding: const EdgeInsets.all(16),
@@ -130,7 +130,7 @@ class StudentDetailScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
 
                     // Tutores
-                    _SectionTitle('Tutores / Contactos').animate().fadeIn(delay: 200.ms),
+                    const _SectionTitle('Tutores / Contactos').animate().fadeIn(delay: 200.ms),
                     guardiansAsync.when(
                       loading: () => const ShimmerLoader(itemCount: 2),
                       error: (e, _) => Text('Error: $e'),
@@ -157,7 +157,7 @@ class StudentDetailScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
 
                     // Código de invitación
-                    _SectionTitle('Código de invitación para padres')
+                    const _SectionTitle('Código de invitación para padres')
                         .animate()
                         .fadeIn(delay: 250.ms),
                     Card(
@@ -187,7 +187,7 @@ class StudentDetailScreen extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _SectionTitle('Reportes'),
+                        const _SectionTitle('Reportes'),
                         TextButton(
                           onPressed: () =>
                               context.push(AppRoutes.reportsHistory),

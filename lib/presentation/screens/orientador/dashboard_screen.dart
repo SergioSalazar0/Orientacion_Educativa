@@ -87,7 +87,9 @@ class DashboardScreen extends ConsumerWidget {
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
-          ).animate().fadeIn(),
+          )
+              .animate()
+              .fadeIn(duration: 300.ms),
           const SizedBox(height: 20),
 
           // Accesos rápidos
@@ -101,7 +103,9 @@ class DashboardScreen extends ConsumerWidget {
                       .onSurface
                       .withValues(alpha: 0.5),
                 ),
-          ).animate().fadeIn(delay: 100.ms),
+          )
+              .animate()
+              .fadeIn(delay: 0.ms, duration: 300.ms),
           const SizedBox(height: 10),
           GridView.count(
             crossAxisCount: 2,
@@ -160,7 +164,9 @@ class DashboardScreen extends ConsumerWidget {
                 child: const Text('Ver todas'),
               ),
             ],
-          ).animate().fadeIn(delay: 300.ms),
+          )
+              .animate()
+              .fadeIn(delay: 0.ms, duration: 300.ms),
           const SizedBox(height: 8),
 
           upcomingAsync.when(
@@ -245,7 +251,7 @@ class _QuickAction extends StatelessWidget {
       ),
     )
         .animate(delay: Duration(milliseconds: 150 + index * 60))
-        .fadeIn()
+        .fadeIn(duration: 300.ms)
         .slideY(begin: 0.2, curve: Curves.easeOut);
   }
 }

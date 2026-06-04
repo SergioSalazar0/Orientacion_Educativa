@@ -138,8 +138,8 @@ class _ReportFormScreenState extends ConsumerState<ReportFormScreen> {
               const SizedBox(height: 8),
               Text(
                 '✓ $_imageName',
-                style: TextStyle(
-                  color: const Color(0xFF16A34A),
+                style: const TextStyle(
+                  color: Color(0xFF16A34A),
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),

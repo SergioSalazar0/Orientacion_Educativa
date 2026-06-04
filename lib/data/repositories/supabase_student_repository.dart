@@ -76,7 +76,7 @@ class SupabaseStudentRepository implements IStudentRepository {
           .single();
       return StudentModel.fromJson(data).toEntity();
     } on sb.PostgrestException catch (e) {
-      if (e.code == 'PGRST116') throw NotFoundException('Alumno no encontrado.');
+      if (e.code == 'PGRST116') throw const NotFoundException('Alumno no encontrado.');
       throw ServerException(e.message);
     }
   }
@@ -94,7 +94,7 @@ class SupabaseStudentRepository implements IStudentRepository {
       return StudentModel.fromJson(data).toEntity();
     } on sb.PostgrestException catch (e) {
       if (e.code == '23505') {
-        throw ValidationException('La matrícula ya existe.');
+        throw const ValidationException('La matrícula ya existe.');
       }
       throw ServerException(e.message);
     }
@@ -151,7 +151,7 @@ class SupabaseStudentRepository implements IStudentRepository {
     final path = '$studentId/photo.$extension';
     await _client.storage
         .from(AppConstants.bucketStudentPhotos)
-        .uploadBinary(path, Uint8List.fromList(bytes), fileOptions: sb.FileOptions(upsert: true));
+        .uploadBinary(path, Uint8List.fromList(bytes), fileOptions: const sb.FileOptions(upsert: true));
 
     return _client.storage
         .from(AppConstants.bucketStudentPhotos)

@@ -16,11 +16,16 @@ class ShimmerLoader extends StatelessWidget {
       highlightColor: Theme.of(context).brightness == Brightness.dark
           ? const Color(0xFF2D3748)
           : const Color(0xFFF8FAFC),
-      child: ListView.separated(
+      child: Padding(
         padding: const EdgeInsets.all(16),
-        itemCount: itemCount,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (_, __) => _ShimmerCard(),
+        child: Column(
+          children: [
+            for (int i = 0; i < itemCount; i++) ...[
+              if (i > 0) const SizedBox(height: 12),
+              const _ShimmerCard(),
+            ]
+          ],
+        ),
       ),
     );
   }

@@ -43,7 +43,9 @@ class EmptyState extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
               textAlign: TextAlign.center,
-            ).animate().fadeIn(delay: 150.ms),
+            )
+                .animate()
+                .fadeIn(delay: 0.ms, duration: 300.ms),
             if (subtitle != null) ...[
               const SizedBox(height: 8),
               Text(
@@ -55,7 +57,9 @@ class EmptyState extends StatelessWidget {
                           .withValues(alpha: 0.5),
                     ),
                 textAlign: TextAlign.center,
-              ).animate().fadeIn(delay: 250.ms),
+              )
+                  .animate()
+                  .fadeIn(delay: 0.ms, duration: 300.ms),
             ],
             if (actionLabel != null && onAction != null) ...[
               const SizedBox(height: 24),
@@ -63,7 +67,10 @@ class EmptyState extends StatelessWidget {
                 onPressed: onAction,
                 icon: const Icon(Icons.add),
                 label: Text(actionLabel!),
-              ).animate().fadeIn(delay: 350.ms).slideY(begin: 0.3),
+              )
+                  .animate()
+                  .fadeIn(delay: 0.ms, duration: 300.ms)
+                  .slideY(begin: 0.3),
             ],
           ],
         ),

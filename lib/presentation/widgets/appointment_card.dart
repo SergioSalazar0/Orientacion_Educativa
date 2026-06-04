@@ -94,8 +94,8 @@ class AppointmentCard extends StatelessWidget {
       ),
     )
         .animate(delay: Duration(milliseconds: index * 60))
-        .fadeIn()
-        .slideY(begin: 0.08);
+        .fadeIn(duration: 300.ms)
+        .slideY(begin: 0.08, duration: 300.ms);
   }
 
   bool _isToday(DateTime date) {

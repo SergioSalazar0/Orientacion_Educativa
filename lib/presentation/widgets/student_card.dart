@@ -77,7 +77,7 @@ class StudentCard extends StatelessWidget {
       ),
     )
         .animate(delay: Duration(milliseconds: index * 50))
-        .fadeIn()
-        .slideX(begin: 0.05);
+        .fadeIn(duration: 300.ms)
+        .slideX(begin: 0.05, duration: 300.ms);
   }
 }

@@ -155,7 +155,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen>
         padding: const EdgeInsets.all(16),
         children: [
           // Datos académicos
-          _SectionHeader('Datos Académicos'),
+          const _SectionHeader('Datos Académicos'),
           AppTextField(
             label: 'Matrícula *',
             controller: _codeCtrl,
@@ -209,7 +209,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen>
           ).animate().fadeIn(delay: 200.ms),
 
           const SizedBox(height: 20),
-          _SectionHeader('Datos de Salud'),
+          const _SectionHeader('Datos de Salud'),
           AppTextField(
             label: 'Tipo de Sangre',
             controller: _bloodTypeCtrl,
@@ -246,7 +246,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen>
           ).animate().fadeIn(delay: 330.ms),
 
           const SizedBox(height: 20),
-          _SectionHeader('Domicilio'),
+          const _SectionHeader('Domicilio'),
           AppTextField(
             label: 'Domicilio',
             controller: _addressCtrl,

@@ -70,7 +70,7 @@ class SupabaseJustificationRepository implements IJustificationRepository {
       await _client.storage
           .from(AppConstants.bucketJustificationFiles)
           .uploadBinary(path, Uint8List.fromList(fileBytes),
-              fileOptions: sb.FileOptions(upsert: true));
+              fileOptions: const sb.FileOptions(upsert: true));
       fileUrl = await _client.storage
           .from(AppConstants.bucketJustificationFiles)
           .createSignedUrl(path, 60 * 60 * 24 * 365);
