@@ -82,8 +82,6 @@ create table invitation_codes (
   id          uuid primary key default gen_random_uuid(),
   code        text not null unique,
   student_id  uuid not null references students(id) on delete cascade,
-  used_by     uuid references profiles(id),
-  expires_at  timestamptz not null,
   created_at  timestamptz not null default now()
 );
 
@@ -204,26 +202,19 @@ declare
   v_code_row invitation_codes%rowtype;
   v_caller_id uuid := auth.uid();
 begin
-  -- Buscar el código
+  -- Buscar el código (sin verificar expiración ni usado_by)
   select * into v_code_row
   from invitation_codes
-  where code = p_code
-    and used_by is null
-    and expires_at > now();
+  where code = p_code;
 
   if not found then
-    return json_build_object('success', false, 'error', 'Código inválido, ya usado o expirado.');
+    return json_build_object('success', false, 'error', 'Código inválido o no existe.');
   end if;
 
   -- Vincular padre con alumno
   insert into parent_students (parent_id, student_id)
   values (v_caller_id, v_code_row.student_id)
   on conflict do nothing;
-
-  -- Marcar código como usado
-  update invitation_codes
-  set used_by = v_caller_id
-  where id = v_code_row.id;
 
   return json_build_object('success', true, 'student_id', v_code_row.student_id);
 end;
