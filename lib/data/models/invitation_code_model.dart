@@ -9,16 +9,12 @@ class InvitationCodeModel {
     required this.id,
     required this.code,
     @JsonKey(name: 'student_id') required this.studentId,
-    @JsonKey(name: 'expires_at') required this.expiresAt,
-    @JsonKey(name: 'used_by') this.usedBy,
     @JsonKey(name: 'created_at') this.createdAt,
   });
 
   final String id;
   final String code;
   final String studentId;
-  final String expiresAt;
-  final String? usedBy;
   final String? createdAt;
 
   factory InvitationCodeModel.fromJson(Map<String, dynamic> json) =>
@@ -29,8 +25,6 @@ class InvitationCodeModel {
         id: id,
         code: code,
         studentId: studentId,
-        expiresAt: DateTime.parse(expiresAt),
-        usedBy: usedBy,
         createdAt: createdAt != null ? DateTime.tryParse(createdAt!) : null,
       );
 }

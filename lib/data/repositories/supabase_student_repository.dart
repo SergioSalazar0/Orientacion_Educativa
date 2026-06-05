@@ -255,20 +255,34 @@ class SupabaseStudentRepository implements IStudentRepository {
 
   @override
   Future<InvitationCode> generateInvitationCode(String studentId) async {
-    final code = _uuid.v4().substring(0, 8).toUpperCase();
-    final expiresAt = DateTime.now()
-        .add(const Duration(days: AppConstants.invitationExpiryDays));
+    try {
+      // Verificar si ya existe un código para este alumno
+      final existing = await _client
+          .from(AppConstants.tableInvitationCodes)
+          .select()
+          .eq('student_id', studentId)
+          .maybeSingle();
 
-    final data = await _client
-        .from(AppConstants.tableInvitationCodes)
-        .insert({
-          'code': code,
-          'student_id': studentId,
-          'expires_at': expiresAt.toIso8601String(),
-        })
-        .select()
-        .single();
-    return InvitationCodeModel.fromJson(data).toEntity();
+      // Si ya existe, devolverlo
+      if (existing != null) {
+        return InvitationCodeModel.fromJson(existing).toEntity();
+      }
+
+      // Si no existe, crear uno nuevo
+      final code = _uuid.v4().substring(0, 8).toUpperCase();
+
+      final data = await _client
+          .from(AppConstants.tableInvitationCodes)
+          .insert({
+            'code': code,
+            'student_id': studentId,
+          })
+          .select()
+          .single();
+      return InvitationCodeModel.fromJson(data).toEntity();
+    } catch (e) {
+      throw ServerException('Error al generar código: $e');
+    }
   }
 
   @override
@@ -276,8 +290,7 @@ class SupabaseStudentRepository implements IStudentRepository {
     final data = await _client
         .from(AppConstants.tableInvitationCodes)
         .select()
-        .eq('student_id', studentId)
-        .order('created_at', ascending: false);
+        .eq('student_id', studentId);
     return (data as List)
         .map((e) => InvitationCodeModel.fromJson(e).toEntity())
         .toList();

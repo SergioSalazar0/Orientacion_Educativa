@@ -55,6 +55,7 @@ class AppRoutes {
 
   // Padre
   static const String parentHome = '/padre';
+  static const String linkChildParent = '/padre/vincular-hijo';
   static const String childProfile = '/padre/perfil';
   static const String parentReports = '/padre/reportes';
   static const String parentJustifications = '/padre/justificantes';
@@ -144,6 +145,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       // ── Padre ─────────────────────────────────────────────────────────────
       GoRoute(path: AppRoutes.parentHome, builder: (_, __) => const ParentHomeScreen()),
+      GoRoute(path: AppRoutes.linkChildParent, builder: (_, __) => const LinkChildScreen()),
       GoRoute(path: AppRoutes.childProfile, builder: (_, __) => const ChildProfileScreen()),
       GoRoute(path: AppRoutes.parentReports, builder: (_, __) => const ParentReportsScreen()),
       GoRoute(path: AppRoutes.parentJustifications, builder: (_, __) => const ParentJustificationsScreen()),

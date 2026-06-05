@@ -195,53 +195,37 @@ class StudentDetailScreen extends ConsumerWidget {
                               padding: EdgeInsets.all(16),
                               child: Text('Sin códigos generados aún.'),
                             )
-                          : Column(
-                              children: codes
-                                  .map(
-                                    (code) => Card(
-                                      color: code.isValid
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .primaryContainer
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .errorContainer,
-                                      child: ListTile(
-                                        leading: Icon(
-                                          code.isValid
-                                              ? Symbols.check_circle
-                                              : Symbols.block,
-                                          color: code.isValid
-                                              ? Theme.of(context)
-                                                  .colorScheme
-                                                  .primary
-                                              : Theme.of(context)
-                                                  .colorScheme
-                                                  .error,
-                                        ),
-                                        title: Text(
-                                          code.code,
-                                          style: const TextStyle(
-                                              fontFamily: 'monospace',
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: Text(
-                                          code.isUsed
-                                              ? 'Usado por: ${code.usedBy}'
-                                              : code.isExpired
-                                                  ? 'Expirado'
-                                                  : 'Válido hasta: ${DateFormat('d MMMM yyyy').format(code.expiresAt)}',
-                                        ),
-                                        trailing: Icon(
-                                          code.isValid
-                                              ? Symbols.verified
-                                              : Symbols.unpublished,
+                            : Column(
+                                children: codes
+                                    .map(
+                                      (code) => Card(
+                                        child: ListTile(
+                                          leading: Icon(
+                                            Symbols.vpn_key,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                          title: Text(
+                                            code.code,
+                                            style: const TextStyle(
+                                                fontFamily: 'monospace',
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: const Text(
+                                            'Código reutilizable para vincular padres',
+                                          ),
+                                          trailing: Icon(
+                                            Symbols.verified,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
+                                    )
+                                    .toList(),
+                              ),
                     ),
 
                     const SizedBox(height: 16),

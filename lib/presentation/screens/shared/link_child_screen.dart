@@ -64,7 +64,7 @@ class _LinkChildScreenState extends ConsumerState<LinkChildScreen> {
                   .scale(duration: 500.ms, curve: Curves.elasticOut),
               const SizedBox(height: 24),
               Text(
-                'Ingresa el código de invitación',
+                'Ingresa el código que tu hijo/a comparte contigo',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -72,8 +72,7 @@ class _LinkChildScreenState extends ConsumerState<LinkChildScreen> {
               ).animate().fadeIn(delay: 100.ms),
               const SizedBox(height: 8),
               Text(
-                'El orientador generó este código al registrar a tu hijo/a. '
-                'Tiene vigencia de 30 días.',
+                'El orientador generó este código único que puedes reutilizar las veces que necesites para vincular el perfil de tu hijo/a.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context)
                           .colorScheme
