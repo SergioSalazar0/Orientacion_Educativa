@@ -104,6 +104,10 @@ class StudentFormViewModel extends Notifier<StudentFormState> {
       Student saved;
       if (student.id.isEmpty) {
         saved = await repo.createStudent(student);
+        // ✅ Generar código de invitación automáticamente
+        await repo.generateInvitationCode(saved.id);
+        // ✅ Invalidar providers para que se vea el código
+        ref.invalidate(invitationCodesProvider(saved.id));
       } else {
         saved = await repo.updateStudent(student);
       }
@@ -114,6 +118,9 @@ class StudentFormViewModel extends Notifier<StudentFormState> {
       }
 
       state = StudentFormState(savedStudent: saved);
+      // Invalidar lista de estudiantes para refrescar
+      ref.invalidate(studentsStreamProvider);
+      ref.invalidate(filteredStudentsProvider);
       return true;
     } on AppException catch (e) {
       state = StudentFormState(errorMessage: e.message);

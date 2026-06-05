@@ -10,26 +10,58 @@ import '../../../domain/entities/justification.dart';
 import '../../viewmodels/justification_viewmodel.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_text_field.dart';
+import '../../providers/repository_providers.dart';
 
-class JustificationFormScreen extends ConsumerStatefulWidget {
-  const JustificationFormScreen({super.key, required this.studentId});
+class JustificationEditScreen extends ConsumerStatefulWidget {
+  const JustificationEditScreen({super.key, required this.justificationId, required this.studentId});
 
+  final String justificationId;
   final String studentId;
 
   @override
-  ConsumerState<JustificationFormScreen> createState() =>
-      _JustificationFormScreenState();
+  ConsumerState<JustificationEditScreen> createState() =>
+      _JustificationEditScreenState();
 }
 
-class _JustificationFormScreenState
-    extends ConsumerState<JustificationFormScreen> {
+class _JustificationEditScreenState
+    extends ConsumerState<JustificationEditScreen> {
   final _reasonCtrl = TextEditingController();
   final _descCtrl = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final List<DateTime> _dates = [];
+  late DateTime _date;
   List<int>? _fileBytes;
   String? _fileExt;
   String? _fileName;
+  String? _currentFileUrl;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _date = DateTime.now();
+    _loadJustification();
+  }
+
+  Future<void> _loadJustification() async {
+    try {
+      final repo = ref.read(justificationRepositoryProvider);
+      final justification = await repo.getJustificationById(widget.justificationId);
+      setState(() {
+        _reasonCtrl.text = justification.reason;
+        _descCtrl.text = justification.description ?? '';
+        _date = justification.date;
+        _currentFileUrl = justification.fileUrl;
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al cargar: $e')),
+        );
+        context.pop();
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -56,30 +88,15 @@ class _JustificationFormScreenState
   Future<void> _pickDate() async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: _dates.isNotEmpty ? _dates.last : DateTime.now(),
+      initialDate: _date,
       firstDate: DateTime(2020),
       lastDate: DateTime.now(),
     );
-    if (picked != null && !_dates.contains(picked)) {
-      setState(() {
-        _dates.add(picked);
-        _dates.sort();
-      });
-    }
-  }
-
-  void _removeDate(DateTime date) {
-    setState(() => _dates.remove(date));
+    if (picked != null) setState(() => _date = picked);
   }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_dates.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Selecciona al menos una fecha')),
-      );
-      return;
-    }
 
     final currentUser = Supabase.instance.client.auth.currentUser;
     if (currentUser == null) {
@@ -91,34 +108,25 @@ class _JustificationFormScreenState
       return;
     }
 
-    final viewModel = ref.read(justificationViewModelProvider.notifier);
-    bool allSuccess = true;
+    final justification = Justification(
+      id: widget.justificationId,
+      studentId: widget.studentId,
+      reason: _reasonCtrl.text.trim(),
+      date: _date,
+      status: JustificationStatus.pendiente,
+      description:
+          _descCtrl.text.trim().isEmpty ? null : _descCtrl.text.trim(),
+      fileUrl: _currentFileUrl,
+      createdBy: currentUser.id,
+    );
 
-    // Create a justification for each selected date
-    for (final date in _dates) {
-      final justification = Justification(
-        id: '',
-        studentId: widget.studentId,
-        reason: _reasonCtrl.text.trim(),
-        date: date,
-        status: JustificationStatus.pendiente,
-        description:
-            _descCtrl.text.trim().isEmpty ? null : _descCtrl.text.trim(),
-        createdBy: currentUser.id,
-      );
-      final ok = await viewModel.save(justification,
-          fileBytes: _fileBytes, fileExt: _fileExt);
-      if (!ok) {
-        allSuccess = false;
-        break;
-      }
-    }
+    final ok = await ref
+        .read(justificationViewModelProvider.notifier)
+        .update(justification, fileBytes: _fileBytes, fileExt: _fileExt);
 
-    if (allSuccess && mounted) {
+    if (ok && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${_dates.length} justificante(s) guardado(s)'),
-        ),
+        const SnackBar(content: Text('Justificante actualizado')),
       );
       context.pop();
     }
@@ -128,8 +136,15 @@ class _JustificationFormScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(justificationViewModelProvider);
 
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Editar Justificante')),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Crear Justificante')),
+      appBar: AppBar(title: const Text('Editar Justificante')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -151,48 +166,43 @@ class _JustificationFormScreenState
               maxLines: 3,
             ).animate().fadeIn(delay: 100.ms),
             const SizedBox(height: 16),
-            // Fechas de ausencia
-            Text(
-              'Fechas de ausencia *',
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            const SizedBox(height: 8),
-            OutlinedButton.icon(
-              onPressed: _pickDate,
-              icon: const Icon(Symbols.add),
-              label: const Text('Agregar fecha'),
-            ).animate().fadeIn(delay: 150.ms),
-            if (_dates.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: _dates
-                    .map(
-                      (date) => Chip(
-                        label: Text(
-                          '${date.day}/${date.month}/${date.year}',
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        onDeleted: () => _removeDate(date),
-                        deleteIcon: const Icon(Symbols.close, size: 18),
-                      ),
-                    )
-                    .toList(),
+            // Fecha
+            InkWell(
+              onTap: _pickDate,
+              borderRadius: BorderRadius.circular(12),
+              child: InputDecorator(
+                decoration: const InputDecoration(
+                  labelText: 'Fecha de ausencia',
+                  prefixIcon: Icon(Symbols.calendar_today),
+                ),
+                child: Text(
+                  '${_date.day}/${_date.month}/${_date.year}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
-            ],
+            ).animate().fadeIn(delay: 150.ms),
             const SizedBox(height: 16),
             OutlinedButton.icon(
               onPressed: _pickFile,
               icon: const Icon(Symbols.attach_file),
-              label: Text(_fileName ?? 'Adjuntar comprobante (PDF/imagen)'),
+              label: Text(_fileName ?? 'Cambiar comprobante (PDF/imagen)'),
             ).animate().fadeIn(delay: 200.ms),
             if (_fileName != null) ...[
               const SizedBox(height: 6),
               Text(
-                '✓ $_fileName',
+                '✓ $_fileName (nuevo)',
                 style: const TextStyle(
                   color: Color(0xFF16A34A),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ] else if (_currentFileUrl != null) ...[
+              const SizedBox(height: 6),
+              Text(
+                '✓ Comprobante existente',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
@@ -208,7 +218,7 @@ class _JustificationFormScreenState
             ],
             const SizedBox(height: 28),
             AppButton(
-              label: 'Guardar Justificante',
+              label: 'Actualizar Justificante',
               icon: Symbols.save,
               isLoading: state.isLoading,
               onPressed: _submit,

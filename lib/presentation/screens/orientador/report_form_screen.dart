@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../domain/entities/report.dart';
 import '../../viewmodels/report_viewmodel.dart';
@@ -51,12 +52,23 @@ class _ReportFormScreenState extends ConsumerState<ReportFormScreen> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
+    final currentUser = Supabase.instance.client.auth.currentUser;
+    if (currentUser == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Usuario no autenticado')),
+        );
+      }
+      return;
+    }
+
     final report = Report(
       id: '',
       studentId: widget.studentId,
       category: _category,
       title: _titleCtrl.text.trim(),
       description: _descCtrl.text.trim(),
+      createdBy: currentUser.id,
     );
     final ok = await ref.read(reportViewModelProvider.notifier).save(
           report,

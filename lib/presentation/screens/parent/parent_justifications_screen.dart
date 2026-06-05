@@ -47,7 +47,7 @@ class _JustificationsList extends ConsumerWidget {
       loading: () => const ShimmerLoader(),
       error: (e, _) => Center(child: Text('Error: $e')),
       data: (items) => items.isEmpty
-          ? EmptyState(
+          ? const EmptyState(
               icon: Symbols.assignment_turned_in,
               title: 'Sin justificantes',
               subtitle: 'No hay justificantes registrados aún',

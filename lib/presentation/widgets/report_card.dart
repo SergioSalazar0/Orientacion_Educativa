@@ -11,12 +11,18 @@ class ReportCard extends StatelessWidget {
     super.key,
     required this.report,
     this.onTap,
+    this.onEdit,
+    this.onDelete,
     this.index = 0,
+    this.showActions = false,
   });
 
   final Report report;
   final VoidCallback? onTap;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
   final int index;
+  final bool showActions;
 
   @override
   Widget build(BuildContext context) {
@@ -120,3 +126,4 @@ class ReportCard extends StatelessWidget {
         .slideY(begin: 0.1);
   }
 }
+

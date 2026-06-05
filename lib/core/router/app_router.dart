@@ -14,8 +14,11 @@ import '../../presentation/screens/orientador/students_list_screen.dart';
 import '../../presentation/screens/orientador/student_form_screen.dart';
 import '../../presentation/screens/orientador/student_detail_screen.dart';
 import '../../presentation/screens/orientador/report_form_screen.dart';
+import '../../presentation/screens/orientador/report_edit_screen.dart';
 import '../../presentation/screens/orientador/reports_history_screen.dart';
 import '../../presentation/screens/orientador/justification_form_screen.dart';
+import '../../presentation/screens/orientador/justification_edit_screen.dart';
+import '../../presentation/screens/orientador/justifications_history_screen.dart';
 import '../../presentation/screens/orientador/appointments_list_screen.dart';
 import '../../presentation/screens/orientador/appointment_form_screen.dart';
 import '../../presentation/screens/parent/parent_home_screen.dart';
@@ -42,8 +45,11 @@ class AppRoutes {
   static const String studentDetail = '/orientador/alumnos/:id';
   static const String studentEdit = '/orientador/alumnos/:id/editar';
   static const String reportNew = '/orientador/alumnos/:id/reporte';
+  static const String reportEdit = '/orientador/reportes/:reportId/editar';
   static const String reportsHistory = '/orientador/reportes';
   static const String justificationNew = '/orientador/alumnos/:id/justificante';
+  static const String justificationEdit = '/orientador/justificantes/:justificationId/editar';
+  static const String justificationsHistory = '/orientador/justificantes';
   static const String appointmentsList = '/orientador/citas';
   static const String appointmentNew = '/orientador/citas/nueva';
 
@@ -114,11 +120,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => ReportFormScreen(studentId: state.pathParameters['id']!),
       ),
       GoRoute(path: AppRoutes.reportsHistory, builder: (_, __) => const ReportsHistoryScreen()),
+       GoRoute(
+         path: AppRoutes.reportEdit,
+         builder: (_, state) => ReportEditScreen(
+           reportId: state.pathParameters['reportId']!,
+           studentId: state.pathParameters['studentId']!,
+         ),
+       ),
       GoRoute(
         path: AppRoutes.justificationNew,
         builder: (_, state) => JustificationFormScreen(studentId: state.pathParameters['id']!),
       ),
       GoRoute(path: AppRoutes.appointmentsList, builder: (_, __) => const AppointmentsListScreen()),
+      GoRoute(path: AppRoutes.justificationsHistory, builder: (_, __) => const JustificationsHistoryScreen()),
+       GoRoute(
+         path: AppRoutes.justificationEdit,
+         builder: (_, state) => JustificationEditScreen(
+           justificationId: state.pathParameters['justificationId']!,
+           studentId: state.pathParameters['studentId']!,
+         ),
+       ),
       GoRoute(path: AppRoutes.appointmentNew, builder: (_, __) => const AppointmentFormScreen()),
 
       // ── Padre ─────────────────────────────────────────────────────────────
@@ -149,3 +170,6 @@ class _AuthNotifier extends ChangeNotifier {
   }
   final Ref _ref;
 }
+
+
+

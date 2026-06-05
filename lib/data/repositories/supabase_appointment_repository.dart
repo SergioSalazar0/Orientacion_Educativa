@@ -66,17 +66,21 @@ class SupabaseAppointmentRepository implements IAppointmentRepository {
 
   @override
   Future<Appointment> createAppointment(Appointment appointment) async {
-    final model = AppointmentModel.fromEntity(appointment);
-    final json = model.toJson()
-      ..remove('id')
-      ..remove('students');
+    try {
+      final model = AppointmentModel.fromEntity(appointment);
+      final json = model.toJsonForInsert();
 
-    final data = await _client
-        .from(AppConstants.tableAppointments)
-        .insert(json)
-        .select('*, students(full_name)')
-        .single();
-    return AppointmentModel.fromJson(data).toEntity();
+      final data = await _client
+          .from(AppConstants.tableAppointments)
+          .insert(json)
+          .select('*, students(full_name)')
+          .single();
+      return AppointmentModel.fromJson(data).toEntity();
+    } on sb.PostgrestException catch (e) {
+      throw ServerException('Error en Supabase: ${e.message} (código: ${e.code})');
+    } catch (e) {
+      throw ServerException('Error al crear cita: $e');
+    }
   }
 
   @override

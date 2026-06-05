@@ -34,4 +34,30 @@ class Justification {
   final String? createdBy;
   final String? reviewedBy;
   final DateTime? createdAt;
+
+  Justification copyWith({
+    String? id,
+    String? studentId,
+    String? reason,
+    DateTime? date,
+    JustificationStatus? status,
+    String? description,
+    String? fileUrl,
+    String? createdBy,
+    String? reviewedBy,
+    DateTime? createdAt,
+  }) {
+    return Justification(
+      id: id ?? this.id,
+      studentId: studentId ?? this.studentId,
+      reason: reason ?? this.reason,
+      date: date ?? this.date,
+      status: status ?? this.status,
+      description: description ?? this.description,
+      fileUrl: fileUrl ?? this.fileUrl,
+      createdBy: createdBy ?? this.createdBy,
+      reviewedBy: reviewedBy ?? this.reviewedBy,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

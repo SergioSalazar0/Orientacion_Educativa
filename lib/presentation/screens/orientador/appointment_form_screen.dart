@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../domain/entities/appointment.dart';
 import '../../viewmodels/appointment_viewmodel.dart';
@@ -66,6 +67,17 @@ class _AppointmentFormScreenState
       );
       return;
     }
+
+    final currentUser = Supabase.instance.client.auth.currentUser;
+    if (currentUser == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Usuario no autenticado')),
+        );
+      }
+      return;
+    }
+
     final appointment = Appointment(
       id: '',
       studentId: _selectedStudentId!,
@@ -75,6 +87,7 @@ class _AppointmentFormScreenState
       reason: _reason,
       status: AppointmentStatus.programada,
       notes: _notesCtrl.text.trim().isEmpty ? null : _notesCtrl.text.trim(),
+      createdBy: currentUser.id,
     );
     final ok = await ref
         .read(appointmentViewModelProvider.notifier)

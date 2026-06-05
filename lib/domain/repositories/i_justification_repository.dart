@@ -13,6 +13,11 @@ abstract interface class IJustificationRepository {
     List<int>? fileBytes,
     String? fileExt,
   });
+  Future<Justification> updateJustification(
+    Justification justification, {
+    List<int>? fileBytes,
+    String? fileExt,
+  });
   Future<Justification> updateStatus(String id, JustificationStatus status);
   Future<void> deleteJustification(String id);
 }

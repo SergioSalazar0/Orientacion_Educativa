@@ -58,6 +58,10 @@ class AppointmentViewModel extends Notifier<AppointmentFormState> {
           .read(appointmentRepositoryProvider)
           .createAppointment(appointment);
       state = AppointmentFormState(saved: saved);
+      // ✅ Invalidar los streams para refrescar los datos
+      ref.invalidate(studentAppointmentsStreamProvider(appointment.studentId));
+      ref.invalidate(appointmentsStreamProvider);
+      ref.invalidate(upcomingAppointmentsProvider);
       return true;
     } on AppException catch (e) {
       state = AppointmentFormState(errorMessage: e.message);

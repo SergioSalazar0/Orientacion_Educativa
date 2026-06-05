@@ -54,6 +54,9 @@ class ReportViewModel extends Notifier<ReportFormState> {
             imageExt: imageExt,
           );
       state = ReportFormState(saved: saved);
+      // ✅ Invalidar el stream para refrescar los datos
+      ref.invalidate(reportsStreamProvider(report.studentId));
+      ref.invalidate(allReportsProvider);
       return true;
     } on AppException catch (e) {
       state = ReportFormState(errorMessage: e.message);
@@ -61,9 +64,29 @@ class ReportViewModel extends Notifier<ReportFormState> {
     }
   }
 
-  Future<bool> delete(String id) async {
+  Future<bool> update(Report report) async {
+    state = state.copyWith(isLoading: true);
     try {
-      await ref.read(reportRepositoryProvider).deleteReport(id);
+      final updated = await ref.read(reportRepositoryProvider).updateReport(report);
+      state = ReportFormState(saved: updated);
+      // ✅ Invalidar el stream para refrescar los datos
+      ref.invalidate(reportsStreamProvider(report.studentId));
+      ref.invalidate(allReportsProvider);
+      return true;
+    } on AppException catch (e) {
+      state = ReportFormState(errorMessage: e.message);
+      return false;
+    }
+  }
+
+  Future<bool> delete(String reportId, String studentId) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      await ref.read(reportRepositoryProvider).deleteReport(reportId);
+      // ✅ Invalidar el stream para refrescar los datos
+      ref.invalidate(reportsStreamProvider(studentId));
+      ref.invalidate(allReportsProvider);
+      state = const ReportFormState();
       return true;
     } on AppException catch (e) {
       state = ReportFormState(errorMessage: e.message);

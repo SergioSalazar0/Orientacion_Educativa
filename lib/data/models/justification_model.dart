@@ -59,6 +59,15 @@ class JustificationModel {
         createdAt: j.createdAt?.toIso8601String(),
       );
 
+  Map<String, dynamic> toJsonForInsert() {
+    final json = toJson();
+    json.remove('id');
+    json.remove('reviewed_by'); // No se asigna al crear
+    // Remover TODOS los nulls (created_at se generará automáticamente)
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+
   static JustificationStatus _parseStatus(String s) => switch (s) {
         'aprobado' => JustificationStatus.aprobado,
         'rechazado' => JustificationStatus.rechazado,

@@ -71,6 +71,16 @@ class AppointmentModel {
         createdAt: a.createdAt?.toIso8601String(),
       );
 
+  Map<String, dynamic> toJsonForInsert() {
+    final json = toJson();
+    json.remove('id');
+    json.remove('students');
+    json.remove('read_at'); // No se asigna al crear
+    // Remover TODOS los nulls (created_at se generará automáticamente)
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+
   static AppointmentReason _parseReason(String s) => switch (s) {
         'vocacional' => AppointmentReason.vocacional,
         'academico' => AppointmentReason.academico,

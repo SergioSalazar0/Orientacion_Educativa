@@ -62,40 +62,46 @@ class SupabaseJustificationRepository implements IJustificationRepository {
     List<int>? fileBytes,
     String? fileExt,
   }) async {
-    String? fileUrl;
+    try {
+      String? fileUrl;
 
-    if (fileBytes != null && fileExt != null) {
-      final path =
-          '${justification.studentId}/${DateTime.now().millisecondsSinceEpoch}.$fileExt';
-      await _client.storage
-          .from(AppConstants.bucketJustificationFiles)
-          .uploadBinary(path, Uint8List.fromList(fileBytes),
-              fileOptions: const sb.FileOptions(upsert: true));
-      fileUrl = await _client.storage
-          .from(AppConstants.bucketJustificationFiles)
-          .createSignedUrl(path, 60 * 60 * 24 * 365);
+      if (fileBytes != null && fileExt != null) {
+        final path =
+            '${justification.studentId}/${DateTime.now().millisecondsSinceEpoch}.$fileExt';
+        await _client.storage
+            .from(AppConstants.bucketJustificationFiles)
+            .uploadBinary(path, Uint8List.fromList(fileBytes),
+                fileOptions: const sb.FileOptions(upsert: true));
+        fileUrl = await _client.storage
+            .from(AppConstants.bucketJustificationFiles)
+            .createSignedUrl(path, 60 * 60 * 24 * 365);
+      }
+
+      final toInsert = Justification(
+        id: justification.id,
+        studentId: justification.studentId,
+        reason: justification.reason,
+        date: justification.date,
+        status: justification.status,
+        description: justification.description,
+        fileUrl: fileUrl ?? justification.fileUrl,
+        createdBy: justification.createdBy,
+      );
+
+      final model = JustificationModel.fromEntity(toInsert);
+      final json = model.toJsonForInsert();
+
+      final data = await _client
+          .from(AppConstants.tableJustifications)
+          .insert(json)
+          .select()
+          .single();
+      return JustificationModel.fromJson(data).toEntity();
+    } on sb.PostgrestException catch (e) {
+      throw ServerException('Error en Supabase: ${e.message} (código: ${e.code})');
+    } catch (e) {
+      throw ServerException('Error al crear justificante: $e');
     }
-
-    final toInsert = Justification(
-      id: justification.id,
-      studentId: justification.studentId,
-      reason: justification.reason,
-      date: justification.date,
-      status: justification.status,
-      description: justification.description,
-      fileUrl: fileUrl ?? justification.fileUrl,
-      createdBy: justification.createdBy,
-    );
-
-    final model = JustificationModel.fromEntity(toInsert);
-    final json = model.toJson()..remove('id');
-
-    final data = await _client
-        .from(AppConstants.tableJustifications)
-        .insert(json)
-        .select()
-        .single();
-    return JustificationModel.fromJson(data).toEntity();
   }
 
   @override
@@ -111,6 +117,48 @@ class SupabaseJustificationRepository implements IJustificationRepository {
         .select()
         .single();
     return JustificationModel.fromJson(data).toEntity();
+  }
+
+  @override
+  Future<Justification> updateJustification(
+    Justification justification, {
+    List<int>? fileBytes,
+    String? fileExt,
+  }) async {
+    try {
+      String? fileUrl = justification.fileUrl;
+
+      // Upload file if new one is provided
+      if (fileBytes != null && fileExt != null) {
+        final fileName = '${DateTime.now().millisecondsSinceEpoch}.$fileExt';
+        final filePath = 'justifications/${justification.id}/$fileName';
+        await _client.storage
+            .from(AppConstants.bucketJustificationFiles)
+            .uploadBinary(filePath, Uint8List.fromList(fileBytes));
+        fileUrl = _client.storage
+            .from(AppConstants.bucketJustificationFiles)
+            .getPublicUrl(filePath);
+      }
+
+      final model = JustificationModel.fromEntity(justification.copyWith(
+        fileUrl: fileUrl,
+      ));
+      final json = model.toJson()
+        ..remove('created_at')
+        ..remove('created_by')
+        ..remove('reviewed_by');
+      final data = await _client
+          .from(AppConstants.tableJustifications)
+          .update(json)
+          .eq('id', justification.id)
+          .select()
+          .single();
+      return JustificationModel.fromJson(data).toEntity();
+    } on sb.PostgrestException catch (e) {
+      throw ServerException('Error en Supabase: ${e.message} (código: ${e.code})');
+    } catch (e) {
+      throw ServerException('Error al actualizar justificante: $e');
+    }
   }
 
   @override

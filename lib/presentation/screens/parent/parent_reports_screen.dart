@@ -45,7 +45,7 @@ class _ReportsList extends ConsumerWidget {
       loading: () => const ShimmerLoader(),
       error: (e, _) => Center(child: Text('Error: $e')),
       data: (reports) => reports.isEmpty
-          ? EmptyState(
+          ? const EmptyState(
               icon: Symbols.description,
               title: 'Sin reportes',
               subtitle: 'El orientador no ha generado reportes aún',

@@ -53,6 +53,51 @@ class JustificationViewModel extends Notifier<JustificationFormState> {
           .createJustification(justification,
               fileBytes: fileBytes, fileExt: fileExt);
       state = JustificationFormState(saved: saved);
+      // ✅ Invalidar el stream para refrescar los datos
+      ref.invalidate(justificationsStreamProvider(justification.studentId));
+      ref.invalidate(allJustificationsProvider);
+      return true;
+    } on AppException catch (e) {
+      state = JustificationFormState(errorMessage: e.message);
+      return false;
+    }
+  }
+
+  Future<bool> update(
+    Justification justification, {
+    List<int>? fileBytes,
+    String? fileExt,
+  }) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      final updated = await ref
+          .read(justificationRepositoryProvider)
+          .updateJustification(
+            justification,
+            fileBytes: fileBytes,
+            fileExt: fileExt,
+          );
+      state = JustificationFormState(saved: updated);
+      // ✅ Invalidar el stream para refrescar los datos
+      ref.invalidate(justificationsStreamProvider(justification.studentId));
+      ref.invalidate(allJustificationsProvider);
+      return true;
+    } on AppException catch (e) {
+      state = JustificationFormState(errorMessage: e.message);
+      return false;
+    }
+  }
+
+  Future<bool> delete(String justificationId, String studentId) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      await ref
+          .read(justificationRepositoryProvider)
+          .deleteJustification(justificationId);
+      // ✅ Invalidar el stream para refrescar los datos
+      ref.invalidate(justificationsStreamProvider(studentId));
+      ref.invalidate(allJustificationsProvider);
+      state = const JustificationFormState();
       return true;
     } on AppException catch (e) {
       state = JustificationFormState(errorMessage: e.message);

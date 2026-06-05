@@ -7,9 +7,11 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../core/router/app_router.dart';
 import '../../viewmodels/report_viewmodel.dart';
+import '../../viewmodels/justification_viewmodel.dart';
 import '../../viewmodels/student_viewmodel.dart';
 import '../../widgets/avatar_image.dart';
 import '../../widgets/report_card.dart';
+import '../../widgets/justification_card.dart';
 import '../../widgets/shimmer_loader.dart';
 
 class StudentDetailScreen extends ConsumerWidget {
@@ -22,6 +24,8 @@ class StudentDetailScreen extends ConsumerWidget {
     final studentAsync = ref.watch(studentDetailProvider(studentId));
     final guardiansAsync = ref.watch(studentGuardiansProvider(studentId));
     final reportsAsync = ref.watch(reportsStreamProvider(studentId));
+    final justificationsAsync = ref.watch(justificationsStreamProvider(studentId));
+    final invitationCodesAsync = ref.watch(invitationCodesProvider(studentId));
 
     return Scaffold(
       body: studentAsync.when(
@@ -181,6 +185,65 @@ class StudentDetailScreen extends ConsumerWidget {
                       ),
                     ).animate().fadeIn(delay: 300.ms),
 
+                    // Listado de códigos generados
+                    const SizedBox(height: 12),
+                    invitationCodesAsync.when(
+                      loading: () => const ShimmerLoader(itemCount: 1),
+                      error: (e, _) => Text('Error: $e'),
+                      data: (codes) => codes.isEmpty
+                          ? const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Text('Sin códigos generados aún.'),
+                            )
+                          : Column(
+                              children: codes
+                                  .map(
+                                    (code) => Card(
+                                      color: code.isValid
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .primaryContainer
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .errorContainer,
+                                      child: ListTile(
+                                        leading: Icon(
+                                          code.isValid
+                                              ? Symbols.check_circle
+                                              : Symbols.block,
+                                          color: code.isValid
+                                              ? Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                              : Theme.of(context)
+                                                  .colorScheme
+                                                  .error,
+                                        ),
+                                        title: Text(
+                                          code.code,
+                                          style: const TextStyle(
+                                              fontFamily: 'monospace',
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Text(
+                                          code.isUsed
+                                              ? 'Usado por: ${code.usedBy}'
+                                              : code.isExpired
+                                                  ? 'Expirado'
+                                                  : 'Válido hasta: ${DateFormat('d MMMM yyyy').format(code.expiresAt)}',
+                                        ),
+                                        trailing: Icon(
+                                          code.isValid
+                                              ? Symbols.verified
+                                              : Symbols.unpublished,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                    ),
+
                     const SizedBox(height: 16),
 
                     // Reportes recientes
@@ -217,6 +280,109 @@ class StudentDetailScreen extends ConsumerWidget {
                                       child: ReportCard(
                                         report: e.value,
                                         index: e.key,
+                                        showActions: true,
+                                        onEdit: () => context.push(
+                                          AppRoutes.reportEdit
+                                              .replaceFirst(':reportId', e.value.id)
+                                              .replaceFirst(':studentId', studentId),
+                                        ),
+                                        onDelete: () async {
+                                          final confirm = await showDialog<bool>(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: const Text('Eliminar Reporte'),
+                                              content: const Text('¿Está seguro que desea eliminar este reporte?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => Navigator.pop(context, false),
+                                                  child: const Text('Cancelar'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () => Navigator.pop(context, true),
+                                                  child: const Text('Eliminar', style: TextStyle(color: Colors.red)),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                          if (confirm == true && context.mounted) {
+                                            await ref
+                                                .read(reportViewModelProvider.notifier)
+                                                .delete(e.value.id, studentId);
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Justificantes recientes
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const _SectionTitle('Justificantes'),
+                        TextButton(
+                          onPressed: () =>
+                              context.push(AppRoutes.justificationsHistory),
+                          child: const Text('Ver todos'),
+                        ),
+                      ],
+                    ).animate().fadeIn(delay: 400.ms),
+
+                    justificationsAsync.when(
+                      loading: () => const ShimmerLoader(itemCount: 2),
+                      error: (e, _) => Text('Error: $e'),
+                      data: (justifications) => justifications.isEmpty
+                          ? const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Text('Sin justificantes aún.'),
+                            )
+                          : Column(
+                              children: justifications
+                                  .take(3)
+                                  .toList()
+                                  .asMap()
+                                  .entries
+                                  .map(
+                                    (e) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 12),
+                                      child: JustificationCard(
+                                        justification: e.value,
+                                        index: e.key,
+                                        showActions: true,
+                                        onEdit: () => context.push(
+                                          AppRoutes.justificationEdit
+                                              .replaceFirst(':justificationId', e.value.id)
+                                              .replaceFirst(':studentId', studentId),
+                                        ),
+                                        onDelete: () async {
+                                          final confirm = await showDialog<bool>(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: const Text('Eliminar Justificante'),
+                                              content: const Text('¿Está seguro que desea eliminar este justificante?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => Navigator.pop(context, false),
+                                                  child: const Text('Cancelar'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () => Navigator.pop(context, true),
+                                                  child: const Text('Eliminar', style: TextStyle(color: Colors.red)),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                          if (confirm == true && context.mounted) {
+                                            await ref
+                                                .read(justificationViewModelProvider.notifier)
+                                                .delete(e.value.id, studentId);
+                                          }
+                                        },
                                       ),
                                     ),
                                   )

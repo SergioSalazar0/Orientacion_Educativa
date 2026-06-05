@@ -61,40 +61,44 @@ class SupabaseReportRepository implements IReportRepository {
     List<int>? imageBytes,
     String? imageExt,
   }) async {
-    String? imageUrl;
+    try {
+      String? imageUrl;
 
-    if (imageBytes != null && imageExt != null) {
-      final path = '${report.studentId}/${DateTime.now().millisecondsSinceEpoch}.$imageExt';
-      await _client.storage
-          .from(AppConstants.bucketReportImages)
-          .uploadBinary(path, Uint8List.fromList(imageBytes),
-              fileOptions: const sb.FileOptions(upsert: true));
-      imageUrl = await _client.storage
-          .from(AppConstants.bucketReportImages)
-          .createSignedUrl(path, 60 * 60 * 24 * 365);
+      if (imageBytes != null && imageExt != null) {
+        final path = '${report.studentId}/${DateTime.now().millisecondsSinceEpoch}.$imageExt';
+        await _client.storage
+            .from(AppConstants.bucketReportImages)
+            .uploadBinary(path, Uint8List.fromList(imageBytes),
+                fileOptions: const sb.FileOptions(upsert: true));
+        imageUrl = await _client.storage
+            .from(AppConstants.bucketReportImages)
+            .createSignedUrl(path, 60 * 60 * 24 * 365);
+      }
+
+      final model = ReportModel.fromEntity(
+        imageUrl != null ? Report(
+          id: report.id,
+          studentId: report.studentId,
+          category: report.category,
+          title: report.title,
+          description: report.description,
+          imageUrl: imageUrl,
+          createdBy: report.createdBy,
+        ) : report,
+      );
+      final json = model.toJsonForInsert();
+
+      final data = await _client
+          .from(AppConstants.tableReports)
+          .insert(json)
+          .select('*, profiles(full_name)')
+          .single();
+      return ReportModel.fromJson(data).toEntity();
+    } on sb.PostgrestException catch (e) {
+      throw ServerException('Error en Supabase: ${e.message} (código: ${e.code})');
+    } catch (e) {
+      throw ServerException('Error al crear reporte: $e');
     }
-
-    final model = ReportModel.fromEntity(
-      imageUrl != null ? Report(
-        id: report.id,
-        studentId: report.studentId,
-        category: report.category,
-        title: report.title,
-        description: report.description,
-        imageUrl: imageUrl,
-        createdBy: report.createdBy,
-      ) : report,
-    );
-    final json = model.toJson()
-      ..remove('id')
-      ..remove('profiles');
-
-    final data = await _client
-        .from(AppConstants.tableReports)
-        .insert(json)
-        .select('*, profiles(full_name)')
-        .single();
-    return ReportModel.fromJson(data).toEntity();
   }
 
   @override

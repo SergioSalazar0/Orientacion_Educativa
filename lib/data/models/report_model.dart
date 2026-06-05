@@ -55,6 +55,15 @@ class ReportModel {
         createdAt: r.createdAt?.toIso8601String(),
       );
 
+  Map<String, dynamic> toJsonForInsert() {
+    final json = toJson();
+    json.remove('id');
+    json.remove('profiles');
+    // Remover TODOS los nulls (created_at se generará automáticamente)
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+
   static ReportCategory _parseCategory(String s) => switch (s) {
         'conducta' => ReportCategory.conducta,
         'rendimiento' => ReportCategory.rendimiento,
