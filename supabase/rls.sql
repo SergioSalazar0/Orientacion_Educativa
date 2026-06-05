@@ -82,8 +82,13 @@ create policy "parent_students: padre select own"
   on parent_students for select
   using (parent_id = auth.uid());
 
+-- Permitir la inserción vía redeem_invitation_code (que usa security definer)
+-- Esta política permite insertar cuando parent_id es el usuario actual
+create policy "parent_students: insert via redeem_invitation_code"
+  on parent_students for insert
+  with check (parent_id = auth.uid());
+
 -- Inserción solo vía redeem_invitation_code (security definer), no directa
--- ═══════════════════════════════════════════════════════════════
 -- invitation_codes
 -- ═══════════════════════════════════════════════════════════════
 alter table invitation_codes enable row level security;
