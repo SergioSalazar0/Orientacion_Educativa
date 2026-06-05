@@ -1,5 +1,5 @@
 -- ============================================================
--- Migración: Remover expiración y reutilización en codes
+-- ción: Remover expiración y reutilización en codes
 -- Ejecutar en: Supabase > SQL Editor
 -- ============================================================
 
