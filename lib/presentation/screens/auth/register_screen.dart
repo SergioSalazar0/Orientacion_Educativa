@@ -65,7 +65,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       );
       await Future.delayed(const Duration(milliseconds: 500));
       // Después del registro, el padre debe vincular a su hijo
-      if (mounted) context.go(AppRoutes.linkChild);
+      if (mounted) {
+        ref.read(authViewModelProvider.notifier).clearState();
+        context.go(AppRoutes.linkChild);
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

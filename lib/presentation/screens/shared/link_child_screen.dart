@@ -23,6 +23,15 @@ class _LinkChildScreenState extends ConsumerState<LinkChildScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    // Limpiar el estado al entrar a la pantalla
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(authViewModelProvider.notifier).clearState();
+    });
+  }
+
+  @override
   void dispose() {
     _codeCtrl.dispose();
     super.dispose();
@@ -42,6 +51,16 @@ class _LinkChildScreenState extends ConsumerState<LinkChildScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(authViewModelProvider);
     final primary = Theme.of(context).colorScheme.primary;
+
+    // Escuchar cambios en el estado para actualizar en tiempo real
+    ref.listen<AuthState>(authViewModelProvider, (previous, next) {
+      if (!next.isLoading && next.errorMessage == null && previous?.isLoading == true) {
+        // Si cambia de loading a no loading sin errores, significa que fue exitoso
+        if (mounted) {
+          context.go(AppRoutes.parentHome);
+        }
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('Vincular a mi hijo/a')),

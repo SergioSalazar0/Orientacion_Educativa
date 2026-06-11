@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/errors/app_exception.dart';
 import '../../domain/entities/app_user.dart';
 import '../providers/repository_providers.dart';
+import 'student_viewmodel.dart';
 
 /// Estado del ViewModel de autenticación.
 class AuthState {
@@ -90,6 +91,8 @@ class AuthViewModel extends Notifier<AuthState> {
     state = state.copyWith(isLoading: true);
     try {
       await ref.read(authRepositoryProvider).redeemInvitationCode(code);
+      // Invalidar el stream de estudiantes para que se refresque
+      ref.invalidate(studentsStreamProvider);
       state = const AuthState();
       return true;
     } on AppException catch (e) {
@@ -99,6 +102,8 @@ class AuthViewModel extends Notifier<AuthState> {
   }
 
   void clearError() => state = state.copyWith(errorMessage: null);
+  
+  void clearState() => state = const AuthState();
 }
 
 final authViewModelProvider =
